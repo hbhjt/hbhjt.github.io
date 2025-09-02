@@ -1,0 +1,211 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>sql后缀文件生成数据库 | 我的技术博客</title><meta name="author" content="hjt"><meta name="copyright" content="hjt"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="要使用 .sql 后缀的文件生成对应的数据库，本质是执行该文件中包含的 SQL 语句（通常包括创建数据库、表结构、插入数据等命令）。具体操作取决于你使用的数据库类型（如 MySQL、PostgreSQL、SQL Server 等），以下是通用步骤和主流数据库的具体方法： 通用前提 已安装对应数据库的服务（如 MySQL 服务、PostgreSQL 服务等），并确保服务已启动。 已安装数据库客户端工">
+<meta property="og:type" content="article">
+<meta property="og:title" content="sql后缀文件生成数据库">
+<meta property="og:url" content="http://example.com/2025/08/28/sql%E5%90%8E%E7%BC%80%E6%96%87%E4%BB%B6%E7%94%9F%E6%88%90%E6%95%B0%E6%8D%AE%E5%BA%93/index.html">
+<meta property="og:site_name" content="我的技术博客">
+<meta property="og:description" content="要使用 .sql 后缀的文件生成对应的数据库，本质是执行该文件中包含的 SQL 语句（通常包括创建数据库、表结构、插入数据等命令）。具体操作取决于你使用的数据库类型（如 MySQL、PostgreSQL、SQL Server 等），以下是通用步骤和主流数据库的具体方法： 通用前提 已安装对应数据库的服务（如 MySQL 服务、PostgreSQL 服务等），并确保服务已启动。 已安装数据库客户端工">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/%E6%88%91%E7%9A%84%E5%9B%BE%E7%89%87.jpg">
+<meta property="article:published_time" content="2025-08-27T22:32:33.000Z">
+<meta property="article:modified_time" content="2025-08-27T22:32:33.000Z">
+<meta property="article:author" content="hjt">
+<meta property="article:tag" content="sql">
+<meta property="article:tag" content="脚本">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/%E6%88%91%E7%9A%84%E5%9B%BE%E7%89%87.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "sql后缀文件生成数据库",
+  "url": "http://example.com/2025/08/28/sql%E5%90%8E%E7%BC%80%E6%96%87%E4%BB%B6%E7%94%9F%E6%88%90%E6%95%B0%E6%8D%AE%E5%BA%93/",
+  "image": "http://example.com/images/%E6%88%91%E7%9A%84%E5%9B%BE%E7%89%87.jpg",
+  "datePublished": "2025-08-27T22:32:33.000Z",
+  "dateModified": "2025-08-27T22:32:33.000Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "hjt",
+      "url": "http://example.com"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2025/08/28/sql%E5%90%8E%E7%BC%80%E6%96%87%E4%BB%B6%E7%94%9F%E6%88%90%E6%95%B0%E6%8D%AE%E5%BA%93/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'undefined')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'undefined')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'sql后缀文件生成数据库',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="web_bg" style="background: [object Object];"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/images/%E6%88%91%E7%9A%84%E5%9B%BE%E7%89%87.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">13</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">13</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">1</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-user"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">我的技术博客</span></a><a class="nav-page-title" href="/"><span class="site-name">sql后缀文件生成数据库</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-user"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">sql后缀文件生成数据库</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-08-27T22:32:33.000Z" title="发表于 2025-08-28 06:32:33">2025-08-28</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-08-27T22:32:33.000Z" title="更新于 2025-08-28 06:32:33">2025-08-28</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><p>要使用 <code>.sql</code> 后缀的文件生成对应的数据库，本质是执行该文件中包含的 SQL 语句（通常包括创建数据库、表结构、插入数据等命令）。具体操作取决于你使用的数据库类型（如 MySQL、PostgreSQL、SQL Server 等），以下是通用步骤和主流数据库的具体方法：</p>
+<h3 id="通用前提"><a href="#通用前提" class="headerlink" title="通用前提"></a>通用前提</h3><ol>
+<li>已安装对应数据库的服务（如 MySQL 服务、PostgreSQL 服务等），并确保服务已启动。</li>
+<li>已安装数据库客户端工具（命令行工具或图形化工具，如 MySQL Workbench、pgAdmin 等）。</li>
+<li><code>.sql</code> 文件内容完整有效（包含创建数据库、表、索引等必要 SQL 语句）。</li>
+</ol>
+<h3 id="分数据库操作方法"><a href="#分数据库操作方法" class="headerlink" title="分数据库操作方法"></a>分数据库操作方法</h3><h4 id="1-MySQL-MariaDB"><a href="#1-MySQL-MariaDB" class="headerlink" title="1. MySQL &#x2F; MariaDB"></a>1. MySQL &#x2F; MariaDB</h4><h5 id="方法-1：命令行执行"><a href="#方法-1：命令行执行" class="headerlink" title="方法 1：命令行执行"></a>方法 1：命令行执行</h5><p>bash</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1. 登录数据库（输入密码后回车）</span></span><br><span class="line">mysql -u 用户名 -p</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. （可选）如果.sql文件中没有创建数据库的语句，先手动创建数据库</span></span><br><span class="line">CREATE DATABASE 数据库名;</span><br><span class="line">USE 数据库名;  <span class="comment"># 切换到目标数据库</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 3. 执行.sql文件（在MySQL命令行中）</span></span><br><span class="line">SOURCE /路径/到/你的文件.sql;  <span class="comment"># 注意替换为实际文件路径，如 D:/sql/backup.sql</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 或直接在系统命令行中执行（无需先登录）</span></span><br><span class="line">mysql -u 用户名 -p 数据库名 &lt; /路径/到/你的文件.sql</span><br></pre></td></tr></table></figure>
+
+<h5 id="方法-2：图形化工具（如-MySQL-Workbench）"><a href="#方法-2：图形化工具（如-MySQL-Workbench）" class="headerlink" title="方法 2：图形化工具（如 MySQL Workbench）"></a>方法 2：图形化工具（如 MySQL Workbench）</h5><ol>
+<li>打开 MySQL Workbench 并连接到数据库服务。</li>
+<li>在左侧导航栏右键点击「Databases」→「Create Schema」创建数据库（若.sql 文件中已包含创建语句，可跳过）。</li>
+<li>选中创建的数据库，点击菜单栏「File」→「Run SQL Script」，选择 <code>.sql</code> 文件执行。</li>
+</ol>
+<h4 id="2-PostgreSQL"><a href="#2-PostgreSQL" class="headerlink" title="2. PostgreSQL"></a>2. PostgreSQL</h4><h5 id="方法-1：命令行执行（psql）"><a href="#方法-1：命令行执行（psql）" class="headerlink" title="方法 1：命令行执行（psql）"></a>方法 1：命令行执行（psql）</h5><p>bash</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1. 登录数据库（输入密码后回车）</span></span><br><span class="line">psql -U 用户名 -d postgres  <span class="comment"># postgres是默认管理员数据库</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. （可选）若.sql文件中无创建数据库语句，先手动创建</span></span><br><span class="line">CREATE DATABASE 数据库名;</span><br><span class="line">\c 数据库名;  <span class="comment"># 切换到目标数据库</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 3. 执行.sql文件（在psql命令行中）</span></span><br><span class="line">\i /路径/到/你的文件.sql;  <span class="comment"># 如 /home/user/data.sql</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 或直接在系统命令行中执行</span></span><br><span class="line">psql -U 用户名 -d 数据库名 -f /路径/到/你的文件.sql</span><br></pre></td></tr></table></figure>
+
+<h5 id="方法-2：图形化工具（如-pgAdmin）"><a href="#方法-2：图形化工具（如-pgAdmin）" class="headerlink" title="方法 2：图形化工具（如 pgAdmin）"></a>方法 2：图形化工具（如 pgAdmin）</h5><ol>
+<li>打开 pgAdmin 并连接到数据库服务。</li>
+<li>在左侧「Browser」中右键点击「Databases」→「Create」→「Database」创建数据库。</li>
+<li>选中创建的数据库，右键点击「Query Tool」，然后点击菜单栏「File」→「Open File」选择 <code>.sql</code> 文件，点击运行按钮执行。</li>
+</ol>
+<h4 id="3-SQL-Server"><a href="#3-SQL-Server" class="headerlink" title="3. SQL Server"></a>3. SQL Server</h4><h5 id="方法-1：命令行执行（sqlcmd）"><a href="#方法-1：命令行执行（sqlcmd）" class="headerlink" title="方法 1：命令行执行（sqlcmd）"></a>方法 1：命令行执行（sqlcmd）</h5><p>bash</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在系统命令行中执行（需先配置sqlcmd环境变量）</span></span><br><span class="line">sqlcmd -S 服务器名 -U 用户名 -P 密码 -d 数据库名 -i <span class="string">&quot;C:\路径\到\你的文件.sql&quot;</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHgAAAAwCAYAAADab77TAAAACXBIWXMAABYlAAAWJQFJUiTwAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAjBSURBVHgB7VxNUxNJGO7EoIIGygoHQi0HPbBWeWEN+LFlKRdvsHf9AXBf9y7eZe/wA5a7cPNg3LJ2VYjFxdLiwFatVcBBDhAENfjxPO3bY2cyM/maiYnOU5VMT0/PTE+/3+9Md0LViJWVla6PHz8OHB4e9h8/fjyNbQ+qu1SMVqCUSqX2Mea7KG8nk8mt0dHRUi0nJqo1AGF7cPHT79+/H1IxQdsJr0DoNRB6P6iRL4EpsZ8+ffoZv9NW9TZ+Wzs7O9unTp3ar5WLYjQH0uLDhw+9iUSiD7sD+GXMsaNHj65Dstf8aJHwuWAPuOOyqGGiJm6J0RqQPjCXwygOSdU+6POvF30qCHz//v2+TCYzSuKCaw729vaWr1+/vqNitB2E0L+i2I3fPsrLly5d2rXbJNwnWJJLqX0eq+H2hji/I+qL6q6Q5ITdEAevCnG3Lly4sKxidAyePn1KIlNlk8h/G8FMmgZ0qIxaRoNVFaOjQG2LzQF+jHqGnXr+UTUbb7mrq+ufWC13HkgzRDda6yKkPUOasqwJLB4Z8Sr2lDsX4gy/Ypm5C26TtL1K3G2GQipGR8PQkIkp7Vcx/SjHtmPp7XwIDZmQ0qnllPqaFdlSPyiWl5dvgPPTGJC1sbGxvIoAjx49Sh87duwuy/B3lhClLK6urg6XSqWb6XR69uzZs0UVHkjLDN8bkMBMf6k3b97squ8cUFmLGNyNI0eO5M+fP79g6pECvIn6LIpL+OVVRMB9ctyCmQpPnjwZBgH+Qp1CMin37NmzafRpQ4UAppL7+vpoh3tTCIt68MAKXBRZtorcizdQD7yO4QE3crncb0HngzA8N232QYwCJG1a1QFKCwY0i/tleb5qMa5cuVLEczj7Fy9eXEPsegfE/h27WdDhNrZ1PZMf+J4A2ojF7hSISylWUYZGSIiP+x3DYA++fPkyXUVFpVWTgCrMUVoEoRKYzAMCVe0jnlVvMfiDhUKB0ryB8gL6dYNqm3WgR3FkZKQpZ5e0BPOw2JVSLQA6PWEezgswD+PYLKoagQGp217hnElTxqBOwu5OWodPSpsc6mf8rvHu3bt5SGKFGoVmmMUmq2rvC8djQsq6DpJ8m2MERiTzhSLJROQEhm0ZxIDmgtrgwYb9jkG9D3q031P198G5BwfYp2k24Jjq7u4mE4ZiJ1uFyAkM7s6BO8vqMIgFECln7V/DZrbGS9YtwVCfU5Z63vRoYqSP162LeVzIv3379k+/g/BD5ngv+gDQBndUCxA5gT3Ucx6/h/g5BA6yw5CarFu910Ngkd4JuY+nc0bvWn0Z+Ic4PqMaBDWLlwq37sN+k5nSdrsafJCGkVQRgoNrSyqBwX54cHBQ4eSIHQ4duN+cKUOTzKtviw3px0lTwTFCmPQAtn+OZRUyIpVgqMZrlmokigzwWQA3U1U6jkmQHXajVgmGJ3nL3INeKrzLSMOjACctLwmUTemLQ0hjwniuTfiwEKkEM4Fg71MFWuWCq+01n8s05GQx9sZmnGVI8SY9YBU9tJPm/oFwmnmZZLH6p5+LJsz0sdnwyAuRSbBJLNh1eNBFq1wwoQJRYzysgcGo2oaJBQziNGLwOSTep5EmHEac6ekh494mTGKbKa821Bp29ssHRbRbs65bZp74IsD4E+wPVLKyIoxIGDAyAjPH6lbPsL2bVthT4Yz4xMMV8SUGqiYVLY6MjnehOqdshvLBcICp4LX8CKwZhBoKZmDGVK58TV1p1YznX4MnrSuokmHCxs0YgQkjMR+REdjkXS0wXXnP7HglPuqxw20GncUC4wXGyNQq0BAmRGRmzajupSDvuxlEQmCm3CR5XxfcKk3qKlKA1ASqTkj4M+N1zAqTluoNk8TWa9jOnytBYxOPksrndJg5Sv8gEieLqUDVAMjRtMN2nReB2wmI0x1Coa+O/T0JeLUHcy7Z+zhnPirpJSKRYA/1nEddhf0CI6RRf9euKxaLPDdvXatioPr7+yNJCjQCpkCNHcXW0Sz2y40TJ044hIdzVRYtQGNo6RWndBbXmzehZBgIncBwZsaVyzFi+s6PS93xsDBH3tpPu+11VFmfRmCYmWEOX0Xiee7Zx1lv+ou4fBJtbtnH+bEBiLwAhhjk+XzpAPVeCEuqo1DR4/YO1VZQZ93xsJcdbldI5mmcZebX8V6bz2IzH8MmnWNn+EXimQMkvJw3xeuYWJn1YarsUCWYDof7bQwIFhg7uuNhY4cN17ttMD8QUDVCJKZaaERk5drMRM0FNaQjhVDoD+nbhPUcWq0i9JlOpVK6zwyLaKN5TZtxQcQ7SHBsoI73Sks61cTioYZLoRLY68V+tfiOeWkTGxq47HDDThYGMVunRtBffAQ1MAxGZsa1tTNJqYPd1M/JLzVMW4m9nTdZbIf9W6YNjs+KynbuaSeDwgA/2TnkVx38xLLZrzrcb46ofqupGx6Xtyx2uGETuMzJMqqtFuDZNtGnUCXC3F9iWn7jxcyXZ5iD8GcBTD8JopGAC2B2esyOCqfthZZh2nXKtBE13xRkvhKLpQRuQK+uV+azxLMI6wRj/iCi8OM6quxqhGPcHJbtffHiRQZakLMOdxNQE7+AC3/CznOomXUVo+MBoT2DzTnFGaIg7mupH1Axvhc4kxmSXNCDdhg7GTNhKUbnQmiYYZm0TdKxgo3QE5bsD9NidCZcEwlLOtEBr9XY3qHHjx/3qhgdCZHesomEmsAyYWldDozJjMMYHQRZoeGy7K6biYROqlIormeIQ8zPqRgdBa7TYa3Q4CRbKhZhsVZt2eJSDvFs//aGJDUokEMkrqzQ4EwDLnvZwAOyDAAleQAnXo096/YFl7ziwjlKiMslr9xzvH0XQrMkmYgXQmsjuBdC85Jcg8ClDOUiZ6xqvZQhiM25xDux+m4NxOklURnfli1lCKyL8NW+lKHr4u5l82J8YzAxhdeQ/8Op+q/hxUjdMMsJqy/c0ycTx1sy/fRHh7zx08sJIyn1up7lhD8DfU3/IDqhNFQAAAAASUVORK5CYII=" alt="img"></p>
+<h5 id="方法-2：图形化工具（SQL-Server-Management-Studio-SSMS）"><a href="#方法-2：图形化工具（SQL-Server-Management-Studio-SSMS）" class="headerlink" title="方法 2：图形化工具（SQL Server Management Studio, SSMS）"></a>方法 2：图形化工具（SQL Server Management Studio, SSMS）</h5><ol>
+<li>打开 SSMS 并连接到数据库引擎。</li>
+<li>在「对象资源管理器」中右键点击「数据库」→「新建数据库」创建数据库。</li>
+<li>选中创建的数据库，右键点击「新建查询」，然后点击菜单栏「文件」→「打开」→「文件」选择 <code>.sql</code> 文件，点击「执行」按钮（或按 F5）。</li>
+</ol>
+<h3 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h3><ol>
+<li><strong>路径问题</strong>：执行时确保 <code>.sql</code> 文件路径正确，若路径含空格，需用引号包裹（如 <code>&quot;C:\My Files\data.sql&quot;</code>）。</li>
+<li><strong>权限问题</strong>：登录的数据库用户需有创建数据库、表的权限（通常用管理员账号，如 MySQL 的 root、PostgreSQL 的 postgres）。</li>
+<li><strong>脚本错误</strong>：若执行失败，检查 <code>.sql</code> 文件中是否有语法错误（不同数据库 SQL 语法略有差异），或查看命令行 &#x2F; 工具的错误提示定位问题。</li>
+<li><strong>编码问题</strong>：若文件包含中文等特殊字符，确保数据库编码（如 UTF-8）与文件编码一致，避免乱码。</li>
+</ol>
+<p>通过以上方法，即可将 <code>.sql</code> 文件中的 SQL 语句执行到数据库中，生成对应的数据库结构和数据。</p>
+<p>编辑分享</p>
+<p>除了上述工具，还有哪些工具可以执行SQL脚本文件？</p>
+<p>如何在MySQL中创建一个新的数据库？</p>
+<p>执行SQL脚本文件时可能会遇到哪些常见错误？如何解决？</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://example.com">hjt</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2025/08/28/sql%E5%90%8E%E7%BC%80%E6%96%87%E4%BB%B6%E7%94%9F%E6%88%90%E6%95%B0%E6%8D%AE%E5%BA%93/">http://example.com/2025/08/28/sql%E5%90%8E%E7%BC%80%E6%96%87%E4%BB%B6%E7%94%9F%E6%88%90%E6%95%B0%E6%8D%AE%E5%BA%93/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="http://example.com" target="_blank">我的技术博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/sql/">sql</a><a class="post-meta__tags" href="/tags/%E8%84%9A%E6%9C%AC/">脚本</a></div><div class="post-share"><div class="social-share" data-image="/images/%E6%88%91%E7%9A%84%E5%9B%BE%E7%89%87.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2025/08/28/%E6%95%B0%E6%8D%AE%E5%BA%93sql%E8%84%9A%E6%9C%AC%E4%B9%B1%E7%A0%81%E9%97%AE%E9%A2%98/" title="数据库sql脚本乱码问题"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">数据库sql脚本乱码问题</div></div><div class="info-2"><div class="info-item-1">二、解决中文乱码的步骤目标：让客户端连接编码与数据库编码保持一致（统一为utf8）。 1. 临时修改当前连接的编码（立即生效，仅当前会话有效）在 MariaDB 命令行中执行以下命令，将连接编码改为utf8： sql 123456-- 修改客户端发送数据的编码SET character_set_client = utf8;-- 修改连接层编码SET character_set_connection = utf8;-- 修改返回结果的编码SET character_set_results = utf8;    执行后，重新测试中文插入 &#x2F; 查询，看是否还会乱码（若解决，说明是连接编码问题）。 2. 永久修改编码配置（推荐，重启后生效）临时修改仅对当前会话有效，关闭连接后失效。需修改 MariaDB 的配置文件，永久统一编码： （1）找到配置文件MariaDB 的配置文件通常是：  Windows：C:\Program Files\MariaDB 10.3\my.ini（或my.cnf） Linux：/etc/my.cnf 或 /etc/mysql/my.cnf  （2）编...</div></div></div></a><a class="pagination-related" href="/2025/08/28/chatgpt%E8%AE%BF%E9%97%AE%E4%B8%8Evpn/" title="chatgpt访问与vpn"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">chatgpt访问与vpn</div></div><div class="info-2"><div class="info-item-1">chatgpt访问失败原因 vpn地点需要选择国外 </div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2025/08/28/%E6%95%B0%E6%8D%AE%E5%BA%93sql%E8%84%9A%E6%9C%AC%E4%B9%B1%E7%A0%81%E9%97%AE%E9%A2%98/" title="数据库sql脚本乱码问题"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-08-28</div><div class="info-item-2">数据库sql脚本乱码问题</div></div><div class="info-2"><div class="info-item-1">二、解决中文乱码的步骤目标：让客户端连接编码与数据库编码保持一致（统一为utf8）。 1. 临时修改当前连接的编码（立即生效，仅当前会话有效）在 MariaDB 命令行中执行以下命令，将连接编码改为utf8： sql 123456-- 修改客户端发送数据的编码SET character_set_client = utf8;-- 修改连接层编码SET character_set_connection = utf8;-- 修改返回结果的编码SET character_set_results = utf8;    执行后，重新测试中文插入 &#x2F; 查询，看是否还会乱码（若解决，说明是连接编码问题）。 2. 永久修改编码配置（推荐，重启后生效）临时修改仅对当前会话有效，关闭连接后失效。需修改 MariaDB 的配置文件，永久统一编码： （1）找到配置文件MariaDB 的配置文件通常是：  Windows：C:\Program Files\MariaDB 10.3\my.ini（或my.cnf） Linux：/etc/my.cnf 或 /etc/mysql/my.cnf  （2）编...</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/images/%E6%88%91%E7%9A%84%E5%9B%BE%E7%89%87.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">hjt</div><div class="author-info-description">这是一个用Hexo搭建的个人博客，记录学习心得</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">13</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">13</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">1</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/hbhjt"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/hbhjt" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%9A%E7%94%A8%E5%89%8D%E6%8F%90"><span class="toc-number">1.</span> <span class="toc-text">通用前提</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E6%95%B0%E6%8D%AE%E5%BA%93%E6%93%8D%E4%BD%9C%E6%96%B9%E6%B3%95"><span class="toc-number">2.</span> <span class="toc-text">分数据库操作方法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-MySQL-MariaDB"><span class="toc-number">2.1.</span> <span class="toc-text">1. MySQL &#x2F; MariaDB</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%96%B9%E6%B3%95-1%EF%BC%9A%E5%91%BD%E4%BB%A4%E8%A1%8C%E6%89%A7%E8%A1%8C"><span class="toc-number">2.1.1.</span> <span class="toc-text">方法 1：命令行执行</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%96%B9%E6%B3%95-2%EF%BC%9A%E5%9B%BE%E5%BD%A2%E5%8C%96%E5%B7%A5%E5%85%B7%EF%BC%88%E5%A6%82-MySQL-Workbench%EF%BC%89"><span class="toc-number">2.1.2.</span> <span class="toc-text">方法 2：图形化工具（如 MySQL Workbench）</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-PostgreSQL"><span class="toc-number">2.2.</span> <span class="toc-text">2. PostgreSQL</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%96%B9%E6%B3%95-1%EF%BC%9A%E5%91%BD%E4%BB%A4%E8%A1%8C%E6%89%A7%E8%A1%8C%EF%BC%88psql%EF%BC%89"><span class="toc-number">2.2.1.</span> <span class="toc-text">方法 1：命令行执行（psql）</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%96%B9%E6%B3%95-2%EF%BC%9A%E5%9B%BE%E5%BD%A2%E5%8C%96%E5%B7%A5%E5%85%B7%EF%BC%88%E5%A6%82-pgAdmin%EF%BC%89"><span class="toc-number">2.2.2.</span> <span class="toc-text">方法 2：图形化工具（如 pgAdmin）</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-SQL-Server"><span class="toc-number">2.3.</span> <span class="toc-text">3. SQL Server</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%96%B9%E6%B3%95-1%EF%BC%9A%E5%91%BD%E4%BB%A4%E8%A1%8C%E6%89%A7%E8%A1%8C%EF%BC%88sqlcmd%EF%BC%89"><span class="toc-number">2.3.1.</span> <span class="toc-text">方法 1：命令行执行（sqlcmd）</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%96%B9%E6%B3%95-2%EF%BC%9A%E5%9B%BE%E5%BD%A2%E5%8C%96%E5%B7%A5%E5%85%B7%EF%BC%88SQL-Server-Management-Studio-SSMS%EF%BC%89"><span class="toc-number">2.3.2.</span> <span class="toc-text">方法 2：图形化工具（SQL Server Management Studio, SSMS）</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-number">3.</span> <span class="toc-text">注意事项</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/09/01/%E9%A1%B9%E7%9B%AEgit%E7%9A%84%E4%BD%BF%E7%94%A8/" title="无标题">无标题</a><time datetime="2025-09-01T13:54:38.543Z" title="发表于 2025-09-01 21:54:38">2025-09-01</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/08/31/log%E6%B3%A8%E8%A7%A3%E8%AF%86%E5%88%AB%E5%A4%B1%E8%B4%A5/" title="log注解识别失败">log注解识别失败</a><time datetime="2025-08-31T11:10:38.000Z" title="发表于 2025-08-31 19:10:38">2025-08-31</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/08/28/%E6%95%B0%E6%8D%AE%E5%BA%93sql%E8%84%9A%E6%9C%AC%E4%B9%B1%E7%A0%81%E9%97%AE%E9%A2%98/" title="数据库sql脚本乱码问题">数据库sql脚本乱码问题</a><time datetime="2025-08-27T22:45:50.000Z" title="发表于 2025-08-28 06:45:50">2025-08-28</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/08/28/sql%E5%90%8E%E7%BC%80%E6%96%87%E4%BB%B6%E7%94%9F%E6%88%90%E6%95%B0%E6%8D%AE%E5%BA%93/" title="sql后缀文件生成数据库">sql后缀文件生成数据库</a><time datetime="2025-08-27T22:32:33.000Z" title="发表于 2025-08-28 06:32:33">2025-08-28</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/08/28/chatgpt%E8%AE%BF%E9%97%AE%E4%B8%8Evpn/" title="chatgpt访问与vpn">chatgpt访问与vpn</a><time datetime="2025-08-27T16:37:40.000Z" title="发表于 2025-08-28 00:37:40">2025-08-28</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 By hjt</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.0-b1</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

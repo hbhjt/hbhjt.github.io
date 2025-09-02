@@ -1,0 +1,208 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>数据库sql脚本乱码问题 | 我的技术博客</title><meta name="author" content="hjt"><meta name="copyright" content="hjt"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="二、解决中文乱码的步骤目标：让客户端连接编码与数据库编码保持一致（统一为utf8）。 1. 临时修改当前连接的编码（立即生效，仅当前会话有效）在 MariaDB 命令行中执行以下命令，将连接编码改为utf8： sql 123456-- 修改客户端发送数据的编码SET character_set_client &#x3D; utf8;-- 修改连接层编码SET character_set_connection">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据库sql脚本乱码问题">
+<meta property="og:url" content="http://example.com/2025/08/28/%E6%95%B0%E6%8D%AE%E5%BA%93sql%E8%84%9A%E6%9C%AC%E4%B9%B1%E7%A0%81%E9%97%AE%E9%A2%98/index.html">
+<meta property="og:site_name" content="我的技术博客">
+<meta property="og:description" content="二、解决中文乱码的步骤目标：让客户端连接编码与数据库编码保持一致（统一为utf8）。 1. 临时修改当前连接的编码（立即生效，仅当前会话有效）在 MariaDB 命令行中执行以下命令，将连接编码改为utf8： sql 123456-- 修改客户端发送数据的编码SET character_set_client &#x3D; utf8;-- 修改连接层编码SET character_set_connection">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/%E6%88%91%E7%9A%84%E5%9B%BE%E7%89%87.jpg">
+<meta property="article:published_time" content="2025-08-27T22:45:50.000Z">
+<meta property="article:modified_time" content="2025-08-27T22:45:50.000Z">
+<meta property="article:author" content="hjt">
+<meta property="article:tag" content="sql">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/%E6%88%91%E7%9A%84%E5%9B%BE%E7%89%87.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "数据库sql脚本乱码问题",
+  "url": "http://example.com/2025/08/28/%E6%95%B0%E6%8D%AE%E5%BA%93sql%E8%84%9A%E6%9C%AC%E4%B9%B1%E7%A0%81%E9%97%AE%E9%A2%98/",
+  "image": "http://example.com/images/%E6%88%91%E7%9A%84%E5%9B%BE%E7%89%87.jpg",
+  "datePublished": "2025-08-27T22:45:50.000Z",
+  "dateModified": "2025-08-27T22:45:50.000Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "hjt",
+      "url": "http://example.com"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2025/08/28/%E6%95%B0%E6%8D%AE%E5%BA%93sql%E8%84%9A%E6%9C%AC%E4%B9%B1%E7%A0%81%E9%97%AE%E9%A2%98/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'undefined')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'undefined')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '数据库sql脚本乱码问题',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="web_bg" style="background: [object Object];"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/images/%E6%88%91%E7%9A%84%E5%9B%BE%E7%89%87.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">13</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">13</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">1</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-user"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">我的技术博客</span></a><a class="nav-page-title" href="/"><span class="site-name">数据库sql脚本乱码问题</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-user"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">数据库sql脚本乱码问题</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-08-27T22:45:50.000Z" title="发表于 2025-08-28 06:45:50">2025-08-28</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-08-27T22:45:50.000Z" title="更新于 2025-08-28 06:45:50">2025-08-28</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h3 id="二、解决中文乱码的步骤"><a href="#二、解决中文乱码的步骤" class="headerlink" title="二、解决中文乱码的步骤"></a>二、解决中文乱码的步骤</h3><p>目标：让<strong>客户端连接编码</strong>与<strong>数据库编码</strong>保持一致（统一为<code>utf8</code>）。</p>
+<h4 id="1-临时修改当前连接的编码（立即生效，仅当前会话有效）"><a href="#1-临时修改当前连接的编码（立即生效，仅当前会话有效）" class="headerlink" title="1. 临时修改当前连接的编码（立即生效，仅当前会话有效）"></a>1. 临时修改当前连接的编码（立即生效，仅当前会话有效）</h4><p>在 MariaDB 命令行中执行以下命令，将连接编码改为<code>utf8</code>：</p>
+<p>sql</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 修改客户端发送数据的编码</span></span><br><span class="line"><span class="keyword">SET</span> character_set_client <span class="operator">=</span> utf8;</span><br><span class="line"><span class="comment">-- 修改连接层编码</span></span><br><span class="line"><span class="keyword">SET</span> character_set_connection <span class="operator">=</span> utf8;</span><br><span class="line"><span class="comment">-- 修改返回结果的编码</span></span><br><span class="line"><span class="keyword">SET</span> character_set_results <span class="operator">=</span> utf8;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>执行后，重新测试中文插入 &#x2F; 查询，看是否还会乱码（若解决，说明是连接编码问题）。</p>
+<h4 id="2-永久修改编码配置（推荐，重启后生效）"><a href="#2-永久修改编码配置（推荐，重启后生效）" class="headerlink" title="2. 永久修改编码配置（推荐，重启后生效）"></a>2. 永久修改编码配置（推荐，重启后生效）</h4><p>临时修改仅对当前会话有效，关闭连接后失效。需修改 MariaDB 的配置文件，永久统一编码：</p>
+<h5 id="（1）找到配置文件"><a href="#（1）找到配置文件" class="headerlink" title="（1）找到配置文件"></a>（1）找到配置文件</h5><p>MariaDB 的配置文件通常是：</p>
+<ul>
+<li>Windows：<code>C:\Program Files\MariaDB 10.3\my.ini</code>（或<code>my.cnf</code>）</li>
+<li>Linux：<code>/etc/my.cnf</code> 或 <code>/etc/mysql/my.cnf</code></li>
+</ul>
+<h5 id="（2）编辑配置文件"><a href="#（2）编辑配置文件" class="headerlink" title="（2）编辑配置文件"></a>（2）编辑配置文件</h5><p>在文件中添加 &#x2F; 修改以下内容（确保覆盖客户端和服务端）：</p>
+<p>ini</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[mysqld]</span></span><br><span class="line"><span class="comment"># 服务端编码（数据库/表默认编码）</span></span><br><span class="line"><span class="attr">character-set-server</span> = utf8</span><br><span class="line"><span class="attr">collation-server</span> = utf8_general_ci  <span class="comment"># 推荐用general_ci（不区分大小写），而非bin（二进制）</span></span><br><span class="line"></span><br><span class="line"><span class="section">[client]</span></span><br><span class="line"><span class="comment"># 客户端连接默认编码</span></span><br><span class="line"><span class="attr">default-character-set</span> = utf8</span><br><span class="line"></span><br><span class="line"><span class="section">[mysql]</span></span><br><span class="line"><span class="comment"># mysql命令行客户端编码</span></span><br><span class="line"><span class="attr">default-character-set</span> = utf8</span><br></pre></td></tr></table></figure>
+
+<h5 id="（3）重启-MariaDB-服务"><a href="#（3）重启-MariaDB-服务" class="headerlink" title="（3）重启 MariaDB 服务"></a>（3）重启 MariaDB 服务</h5><ul>
+<li>Windows：通过 “服务” 找到<code>MariaDB</code>，右键 “重启”</li>
+<li>Linux：<code>systemctl restart mariadb</code> 或 <code>service mariadb restart</code></li>
+</ul>
+<h4 id="3-验证修改是否生效"><a href="#3-验证修改是否生效" class="headerlink" title="3. 验证修改是否生效"></a>3. 验证修改是否生效</h4><p>重启后，重新登录 MariaDB，执行以下命令检查：</p>
+<p>sql</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SHOW</span> VARIABLES <span class="keyword">LIKE</span> <span class="string">&#x27;character_set_%&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>若<code>character_set_client</code>、<code>character_set_connection</code>、<code>character_set_results</code>均变为<code>utf8</code>，则配置生效。</p>
+<h4 id="4-（可选）优化数据库编码为utf8mb4"><a href="#4-（可选）优化数据库编码为utf8mb4" class="headerlink" title="4. （可选）优化数据库编码为utf8mb4"></a>4. （可选）优化数据库编码为<code>utf8mb4</code></h4><p>如果需要支持 emoji 或更多特殊中文，建议将数据库 &#x2F; 表编码升级为<code>utf8mb4</code>（完整支持 UTF-8）：</p>
+<p>sql</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 修改数据库编码</span></span><br><span class="line"><span class="keyword">ALTER</span> DATABASE sky_take_out </span><br><span class="line">  <span class="keyword">CHARACTER SET</span> utf8mb4 </span><br><span class="line">  <span class="keyword">COLLATE</span> utf8mb4_general_ci;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 逐个修改表编码（确保数据已备份）</span></span><br><span class="line"><span class="keyword">ALTER TABLE</span> address_book <span class="keyword">CONVERT</span> <span class="keyword">TO</span> <span class="keyword">CHARACTER SET</span> utf8mb4 <span class="keyword">COLLATE</span> utf8mb4_general_ci;</span><br><span class="line"><span class="keyword">ALTER TABLE</span> category <span class="keyword">CONVERT</span> <span class="keyword">TO</span> <span class="keyword">CHARACTER SET</span> utf8mb4 <span class="keyword">COLLATE</span> utf8mb4_general_ci;</span><br><span class="line"><span class="comment">-- 其他表同理...</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<p><img src="data:image/png;base64,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" alt="img"></p>
+<p>同时，配置文件中的<code>character-set-server</code>需改为<code>utf8mb4</code>，<code>collation-server</code>改为<code>utf8mb4_general_ci</code>。</p>
+<h3 id="三、总结"><a href="#三、总结" class="headerlink" title="三、总结"></a>三、总结</h3><p>中文乱码的直接原因是<strong>客户端连接编码（gbk）与数据库编码（utf8）不匹配</strong>，通过统一两者为<code>utf8</code>（或<code>utf8mb4</code>）即可解决。优先执行临时修改验证，再通过配置文件永久生效，确保后续连接不再出现编码问题。</p>
+<p>编辑分享</p>
+<p>除了修改字符集编码，还有其他方法解决MariaDB数据库中的中文乱码问题吗？</p>
+<p>执行了SET character_set_client &#x3D; utf8; SET character_set_connection &#x3D; utf8; SET character_set_results &#x3D; utf8; 后，如何确认客户端连接编码已经修改为utf8？</p>
+<p>如何通过修改MariaDB的配置文件来永久修改字符集编码？</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://example.com">hjt</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2025/08/28/%E6%95%B0%E6%8D%AE%E5%BA%93sql%E8%84%9A%E6%9C%AC%E4%B9%B1%E7%A0%81%E9%97%AE%E9%A2%98/">http://example.com/2025/08/28/%E6%95%B0%E6%8D%AE%E5%BA%93sql%E8%84%9A%E6%9C%AC%E4%B9%B1%E7%A0%81%E9%97%AE%E9%A2%98/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="http://example.com" target="_blank">我的技术博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/sql/">sql</a></div><div class="post-share"><div class="social-share" data-image="/images/%E6%88%91%E7%9A%84%E5%9B%BE%E7%89%87.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2025/08/31/log%E6%B3%A8%E8%A7%A3%E8%AF%86%E5%88%AB%E5%A4%B1%E8%B4%A5/" title="log注解识别失败"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">log注解识别失败</div></div><div class="info-2"><div class="info-item-1"> IntelliJ IDEA： 打开 File -&gt; Settings -&gt; Plugins 搜索 Lombok 并安装（如果未安装） 安装后重启 IDE 确保启用注解处理器：File -&gt; Settings -&gt; Build, Execution, Deployment -&gt; Compiler -&gt; Annotation Processors，勾选 Enable annotation processing    </div></div></div></a><a class="pagination-related" href="/2025/08/28/sql%E5%90%8E%E7%BC%80%E6%96%87%E4%BB%B6%E7%94%9F%E6%88%90%E6%95%B0%E6%8D%AE%E5%BA%93/" title="sql后缀文件生成数据库"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">sql后缀文件生成数据库</div></div><div class="info-2"><div class="info-item-1">要使用 .sql 后缀的文件生成对应的数据库，本质是执行该文件中包含的 SQL 语句（通常包括创建数据库、表结构、插入数据等命令）。具体操作取决于你使用的数据库类型（如 MySQL、PostgreSQL、SQL Server 等），以下是通用步骤和主流数据库的具体方法： 通用前提 已安装对应数据库的服务（如 MySQL 服务、PostgreSQL 服务等），并确保服务已启动。 已安装数据库客户端工具（命令行工具或图形化工具，如 MySQL Workbench、pgAdmin 等）。 .sql 文件内容完整有效（包含创建数据库、表、索引等必要 SQL 语句）。  分数据库操作方法1. MySQL &#x2F; MariaDB方法 1：命令行执行bash 123456789101112# 1. 登录数据库（输入密码后回车）mysql -u 用户名 -p# 2. （可选）如果.sql文件中没有创建数据库的语句，先手动创建数据库CREATE DATABASE 数据库名;USE 数据库名;  # 切换到目标数据库# 3. 执行.sql文件（在MySQL命令行中）SOURCE /路径/到/你...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2025/08/28/sql%E5%90%8E%E7%BC%80%E6%96%87%E4%BB%B6%E7%94%9F%E6%88%90%E6%95%B0%E6%8D%AE%E5%BA%93/" title="sql后缀文件生成数据库"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-08-28</div><div class="info-item-2">sql后缀文件生成数据库</div></div><div class="info-2"><div class="info-item-1">要使用 .sql 后缀的文件生成对应的数据库，本质是执行该文件中包含的 SQL 语句（通常包括创建数据库、表结构、插入数据等命令）。具体操作取决于你使用的数据库类型（如 MySQL、PostgreSQL、SQL Server 等），以下是通用步骤和主流数据库的具体方法： 通用前提 已安装对应数据库的服务（如 MySQL 服务、PostgreSQL 服务等），并确保服务已启动。 已安装数据库客户端工具（命令行工具或图形化工具，如 MySQL Workbench、pgAdmin 等）。 .sql 文件内容完整有效（包含创建数据库、表、索引等必要 SQL 语句）。  分数据库操作方法1. MySQL &#x2F; MariaDB方法 1：命令行执行bash 123456789101112# 1. 登录数据库（输入密码后回车）mysql -u 用户名 -p# 2. （可选）如果.sql文件中没有创建数据库的语句，先手动创建数据库CREATE DATABASE 数据库名;USE 数据库名;  # 切换到目标数据库# 3. 执行.sql文件（在MySQL命令行中）SOURCE /路径/到/你...</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/images/%E6%88%91%E7%9A%84%E5%9B%BE%E7%89%87.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">hjt</div><div class="author-info-description">这是一个用Hexo搭建的个人博客，记录学习心得</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">13</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">13</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">1</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/hbhjt"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/hbhjt" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E8%A7%A3%E5%86%B3%E4%B8%AD%E6%96%87%E4%B9%B1%E7%A0%81%E7%9A%84%E6%AD%A5%E9%AA%A4"><span class="toc-number">1.</span> <span class="toc-text">二、解决中文乱码的步骤</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E4%B8%B4%E6%97%B6%E4%BF%AE%E6%94%B9%E5%BD%93%E5%89%8D%E8%BF%9E%E6%8E%A5%E7%9A%84%E7%BC%96%E7%A0%81%EF%BC%88%E7%AB%8B%E5%8D%B3%E7%94%9F%E6%95%88%EF%BC%8C%E4%BB%85%E5%BD%93%E5%89%8D%E4%BC%9A%E8%AF%9D%E6%9C%89%E6%95%88%EF%BC%89"><span class="toc-number">1.1.</span> <span class="toc-text">1. 临时修改当前连接的编码（立即生效，仅当前会话有效）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E6%B0%B8%E4%B9%85%E4%BF%AE%E6%94%B9%E7%BC%96%E7%A0%81%E9%85%8D%E7%BD%AE%EF%BC%88%E6%8E%A8%E8%8D%90%EF%BC%8C%E9%87%8D%E5%90%AF%E5%90%8E%E7%94%9F%E6%95%88%EF%BC%89"><span class="toc-number">1.2.</span> <span class="toc-text">2. 永久修改编码配置（推荐，重启后生效）</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%EF%BC%881%EF%BC%89%E6%89%BE%E5%88%B0%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number">1.2.1.</span> <span class="toc-text">（1）找到配置文件</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%EF%BC%882%EF%BC%89%E7%BC%96%E8%BE%91%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number">1.2.2.</span> <span class="toc-text">（2）编辑配置文件</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%EF%BC%883%EF%BC%89%E9%87%8D%E5%90%AF-MariaDB-%E6%9C%8D%E5%8A%A1"><span class="toc-number">1.2.3.</span> <span class="toc-text">（3）重启 MariaDB 服务</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%E9%AA%8C%E8%AF%81%E4%BF%AE%E6%94%B9%E6%98%AF%E5%90%A6%E7%94%9F%E6%95%88"><span class="toc-number">1.3.</span> <span class="toc-text">3. 验证修改是否生效</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-%EF%BC%88%E5%8F%AF%E9%80%89%EF%BC%89%E4%BC%98%E5%8C%96%E6%95%B0%E6%8D%AE%E5%BA%93%E7%BC%96%E7%A0%81%E4%B8%BAutf8mb4"><span class="toc-number">1.4.</span> <span class="toc-text">4. （可选）优化数据库编码为utf8mb4</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E6%80%BB%E7%BB%93"><span class="toc-number">2.</span> <span class="toc-text">三、总结</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/09/01/%E9%A1%B9%E7%9B%AEgit%E7%9A%84%E4%BD%BF%E7%94%A8/" title="无标题">无标题</a><time datetime="2025-09-01T13:54:38.543Z" title="发表于 2025-09-01 21:54:38">2025-09-01</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/08/31/log%E6%B3%A8%E8%A7%A3%E8%AF%86%E5%88%AB%E5%A4%B1%E8%B4%A5/" title="log注解识别失败">log注解识别失败</a><time datetime="2025-08-31T11:10:38.000Z" title="发表于 2025-08-31 19:10:38">2025-08-31</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/08/28/%E6%95%B0%E6%8D%AE%E5%BA%93sql%E8%84%9A%E6%9C%AC%E4%B9%B1%E7%A0%81%E9%97%AE%E9%A2%98/" title="数据库sql脚本乱码问题">数据库sql脚本乱码问题</a><time datetime="2025-08-27T22:45:50.000Z" title="发表于 2025-08-28 06:45:50">2025-08-28</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/08/28/sql%E5%90%8E%E7%BC%80%E6%96%87%E4%BB%B6%E7%94%9F%E6%88%90%E6%95%B0%E6%8D%AE%E5%BA%93/" title="sql后缀文件生成数据库">sql后缀文件生成数据库</a><time datetime="2025-08-27T22:32:33.000Z" title="发表于 2025-08-28 06:32:33">2025-08-28</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/08/28/chatgpt%E8%AE%BF%E9%97%AE%E4%B8%8Evpn/" title="chatgpt访问与vpn">chatgpt访问与vpn</a><time datetime="2025-08-27T16:37:40.000Z" title="发表于 2025-08-28 00:37:40">2025-08-28</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 By hjt</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.0-b1</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
